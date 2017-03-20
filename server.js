@@ -5,7 +5,7 @@ const Hapi = require('hapi');
 const Hoek = require('hoek');
 const azure = require('azure-storage');
 const storage = require('./utility/storage');
-const tableService = azure.createTableService();
+const tableService = azure.createTableService(process.env.AZURE_STORAGE_ACCOUNT, process.env.AZURE_STORAGE_ACCOUNT_KEY);
 
 const server = new Hapi.Server();
 server.connection({ port: process.env.PORT || 3000, host: 'localhost' })
