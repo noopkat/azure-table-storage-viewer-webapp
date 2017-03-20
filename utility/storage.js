@@ -9,7 +9,7 @@ module.exports.byTime = function(a, b) {
   return 0;
 }
 
-function getLastNRows(azure, tableService, n, callback) {
+module.exports.getLastNRows = function(azure, tableService, n, callback) {
   const query = new azure.TableQuery()
   .select(['Timestamp', 'EventEnqueuedUtcTime', 'sensor', 'data', 'precipProbability', 'precipIntensity'])
   .top(n)
