@@ -4,7 +4,7 @@ const Path = require('path');
 const Hapi = require('hapi');
 const Hoek = require('hoek');
 const azure = require('azure-storage');
-const storage = requiew('./utility/storage');
+const storage = require('./utility/storage');
 const tableService = azure.createTableService();
 
 const server = new Hapi.Server();
