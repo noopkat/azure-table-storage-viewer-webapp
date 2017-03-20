@@ -1,0 +1,22 @@
+<h1>Table Storage Viewer</h1>
+
+<p>Viewing most recent results from iotgarden table</p>
+
+<table class="table table-striped">
+  <tr>
+    <th>Time</th>
+    <th>Sensor</th>
+    <th>Data</th>
+    <th>PrecipIntensity</th>
+    <th>PrecipProbability</th>
+  </tr>
+  {{#each rows}}
+    <tr>
+        <td>{{Timestamp}}</td>
+        <td>{{sensor}}</td>
+        <td>{{data}}</td>
+        <td>{{precipIntensity}}</td>
+        <td>{{precipProbability}}</td>
+    </tr>
+  {{/each}}
+</table>

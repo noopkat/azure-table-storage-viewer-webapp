@@ -1,0 +1,32 @@
+{
+  "name": "azure-table-storage-viewer-webapp",
+  "version": "1.0.0",
+  "description": "a static Azure Table Storage row dumper app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noopkat/azure-table-storage-viewer-webapp.git"
+  },
+  "keywords": [
+    "Azure",
+    "Table",
+    "Storage"
+  ],
+  "author": "Suz Hinton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noopkat/azure-table-storage-viewer-webapp/issues"
+  },
+  "homepage": "https://github.com/noopkat/azure-table-storage-viewer-webapp#readme",
+  "dependencies": {
+    "azure-storage": "^2.1.0",
+    "handlebars": "^4.0.6",
+    "hapi": "^16.1.0",
+    "hoek": "^4.1.0",
+    "inert": "^4.1.0",
+    "vision": "^4.1.1"
+  }
+}
