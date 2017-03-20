@@ -1,4 +1,4 @@
-module.exports.byTime = function(a, b) {
+function byTime (a, b) {
   const earlier = (new Date(a.EventEnqueuedUtcTime.toString())).getTime() > (new Date(b.EventEnqueuedUtcTime.toString())).getTime();  
   if (earlier) {
     return -1;
