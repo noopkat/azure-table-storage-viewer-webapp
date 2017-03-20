@@ -8,7 +8,7 @@ const storage = requiew('./utility/storage');
 const tableService = azure.createTableService();
 
 const server = new Hapi.Server();
-server.connection({ port: 3000, host: 'localhost' })
+server.connection({ port: process.env.PORT || 3000, host: 'localhost' })
 
 server.register(require('inert'), (err) => {
   server.route({
