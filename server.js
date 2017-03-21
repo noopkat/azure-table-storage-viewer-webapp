@@ -50,7 +50,13 @@ server.register(require('vision'), (err) => {
     path: '/',
     handler: function (request, reply) {
       storage.getLastNRows(azure, tableService, 100, function(error, rows) {
-         reply.view('index', { rows: rows }, { layout: 'main'});
+        const viewData = {
+          rows: rows,
+          storageName: process.env.AZURE_STORAGE_ACCOUNT,
+          tableName: process.env.TABLE_NAME
+        };
+
+        reply.view('index', viewData, { layout: 'main'});
       });
     }
   });
