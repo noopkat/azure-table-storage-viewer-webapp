@@ -19,10 +19,12 @@ module.exports.getLastNRows = function(azure, tableService, columns, n, callback
     if (error) return callback(error, []);
 
       const rows = result.entries.map(e => {
-        return Object.keys(e).reduce((a, b) => {
-          a[b] = e[b]._;
-          return a;
-        }, {});
+        return Object.keys(e)
+          .filter(k => k !== '.metadata')
+          .reduce((a, b) => {
+            a[b] = e[b]._;
+            return a;
+          }, {});
       })
       
       rows.sort(byTime);
