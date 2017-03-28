@@ -49,9 +49,12 @@ server.register(require('vision'), (err) => {
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-      storage.getLastNRows(azure, tableService, 100, function(error, rows) {
+      const columns = process.env.TABLE_COLUMNS.split(',');
+
+      storage.getLastNRows(azure, tableService, columns, 100, function(error, rows) {
         const viewData = {
           rows: rows,
+          columns: columns,
           storageName: process.env.AZURE_STORAGE_ACCOUNT,
           tableName: process.env.TABLE_NAME
         };

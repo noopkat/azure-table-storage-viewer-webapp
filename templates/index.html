@@ -4,19 +4,17 @@
 
 <table class="table table-striped">
   <tr>
-    <th>Time</th>
-    <th>Sensor</th>
-    <th>Data</th>
-    <th>PrecipIntensity</th>
-    <th>PrecipProbability</th>
+    {{#with rows.[0]}}
+      {{#each this}}
+        <th>{{@key}}</th>
+      {{/each}}
+    {{/with}}
   </tr>
-  {{#each rows}}
+  {{#each rows as |row|}}
     <tr>
-        <td>{{Timestamp}}</td>
-        <td>{{sensor}}</td>
-        <td>{{data}}</td>
-        <td>{{precipIntensity}}</td>
-        <td>{{precipProbability}}</td>
+      {{#each this}}
+          <td>{{this}}</td>
+      {{/each}}
     </tr>
   {{/each}}
 </table>

@@ -9,9 +9,9 @@ function byTime (a, b) {
   return 0;
 }
 
-module.exports.getLastNRows = function(azure, tableService, n, callback) {
+module.exports.getLastNRows = function(azure, tableService, columns, n, callback) {
   const query = new azure.TableQuery()
-  .select(['Timestamp', 'EventEnqueuedUtcTime', 'sensor', 'data', 'precipProbability', 'precipIntensity'])
+  .select(columns)
   .top(n)
 
   tableService.queryEntities(process.env.TABLE_NAME, query, null, function(error, result, response) {
