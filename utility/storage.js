@@ -1,5 +1,6 @@
+// sort by date descending
 function byTime (a, b) {
-  const earlier = (new Date(a.EventEnqueuedUtcTime.toString())).getTime() > (new Date(b.EventEnqueuedUtcTime.toString())).getTime();
+  const earlier = getTime(a.EventEnqueuedUtcTime) > getTime(b.EventEnqueuedUtcTime);
 
   switch (earlier) {
     case true:
@@ -13,6 +14,11 @@ function byTime (a, b) {
     default:
       return 0;
   }
+}
+
+// convert fake dates
+function getTime(time) {
+  return (new Date(time.toString())).getTime();
 }
 
 module.exports.getLastNRows = function(azure, tableService, columns, n, callback) {
