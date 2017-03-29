@@ -1,6 +1,6 @@
 // sort by date descending
 function byTime(a, b) {
-  const earlier = getTime(a.EventEnqueuedUtcTime) > getTime(b.EventEnqueuedUtcTime);
+  const earlier = getTime(a.Timestamp) > getTime(b.Timestamp);
 
   switch (earlier) {
     case true:
