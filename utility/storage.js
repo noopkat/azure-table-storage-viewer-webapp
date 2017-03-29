@@ -1,12 +1,18 @@
 function byTime (a, b) {
-  const earlier = (new Date(a.EventEnqueuedUtcTime.toString())).getTime() > (new Date(b.EventEnqueuedUtcTime.toString())).getTime();  
-  if (earlier) {
-    return -1;
+  const earlier = (new Date(a.EventEnqueuedUtcTime.toString())).getTime() > (new Date(b.EventEnqueuedUtcTime.toString())).getTime();
+  
+  switch (earlier) {
+    case true:
+      return -1;
+      break;
+
+    case false:
+      return 1;
+      break;
+
+    default:
+      return 0;
   }
-  if (!earlier) {
-    return 1;
-  }
-  return 0;
 }
 
 module.exports.getLastNRows = function(azure, tableService, columns, n, callback) {
