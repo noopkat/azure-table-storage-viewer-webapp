@@ -1,8 +1,13 @@
+// convert fake dates
+function getTime(time) {
+  return (new Date(time.toString())).getTime();
+}
+
 // sort by date descending
 function byTime(a, b) {
-  const earlier = getTime(a.Timestamp) > getTime(b.Timestamp);
+  const later = getTime(a.Timestamp) > getTime(b.Timestamp);
 
-  switch (earlier) {
+  switch (later) {
     case true:
       return -1;
       break;
@@ -16,12 +21,17 @@ function byTime(a, b) {
   }
 }
 
-// convert fake dates
-function getTime(time) {
-  return (new Date(time.toString())).getTime();
-}
+function byField(field) {
+  return function(a, b) {
+    const numeric = typeof a[field] === 'number' && typeof b[field] === 'number';
+    const aStr = a[field].toString();
+    const bStr = b[field].toString();
 
-module.exports.getLastNRows = function(azure, tableService, columns, n, callback) {
+    return aStr.localeCompare(bStr, 'kn', {numeric: numeric});
+  }
+};
+
+module.exports.getLastNRows = function(azure, tableService, columns, n, sort, callback) {
   const query = new azure.TableQuery()
     .select(columns)
     .top(n);
@@ -40,7 +50,8 @@ module.exports.getLastNRows = function(azure, tableService, columns, n, callback
         }, {});
     });
     
-    const sorted = rows.slice().sort(byTime);
+    const sortStrategy = (sort === 'Timestamp') ? byTime : byField(sort);
+    const sorted = rows.slice().sort(sortStrategy);
 
     return callback(null, sorted);
   });
