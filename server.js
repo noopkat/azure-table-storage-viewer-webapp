@@ -56,7 +56,6 @@ server.register(require('vision'), (err) => {
         
         const viewData = {
           rows: rows,
-          columns: columns,
           storageName: process.env.AZURE_STORAGE_ACCOUNT,
           tableName: process.env.TABLE_NAME
         };
