@@ -49,9 +49,10 @@ server.register(require('vision'), (err) => {
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
+      const numRows = request.query.rows ? encodeURIComponent(request.query.rows) : 100;
       const columns = process.env.TABLE_COLUMNS.split(',');
 
-      storage.getLastNRows(azure, tableService, columns, 100, function(error, rows) {
+      storage.getLastNRows(azure, tableService, columns, numRows, function(error, rows) {
         if (error) {
           console.log(error);
           return reply(error);
