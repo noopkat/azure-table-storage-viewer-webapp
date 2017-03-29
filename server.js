@@ -52,7 +52,10 @@ server.register(require('vision'), (err) => {
       const columns = process.env.TABLE_COLUMNS.split(',');
 
       storage.getLastNRows(azure, tableService, columns, 100, function(error, rows) {
-        if (error) return reply(error);
+        if (error) {
+          console.log(error);
+          return reply(error);
+        }
         
         const viewData = {
           rows: rows,

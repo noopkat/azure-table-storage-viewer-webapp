@@ -1,5 +1,5 @@
 // sort by date descending
-function byTime (a, b) {
+function byTime(a, b) {
   const earlier = getTime(a.EventEnqueuedUtcTime) > getTime(b.EventEnqueuedUtcTime);
 
   switch (earlier) {
@@ -23,26 +23,25 @@ function getTime(time) {
 
 module.exports.getLastNRows = function(azure, tableService, columns, n, callback) {
   const query = new azure.TableQuery()
-  .select(columns)
-  .top(n)
+    .select(columns)
+    .top(n);
 
   tableService.queryEntities(process.env.TABLE_NAME, query, null, function(error, result, response) {
-    console.log(error);
-    if (error) return callback(error, []);
+    if (error) return callback(error);
 
-      // each prop in the results comes back with a nested prop of `_`, 
-      // so this flattens the props and filters out metadata prop also
-      const rows = result.entries.map(e => {
-        return Object.keys(e)
-          .filter(k => k !== '.metadata')
-          .reduce((a, b) => {
-            const flatProp = { [b]: e[b]._ };
-            return Object.assign(a, flatProp);
-          }, {});
-      });
-      
-      const sorted = rows.slice().sort(byTime);
+    // each prop in the results comes back with a nested prop of `_`, 
+    // so this flattens the props and filters out metadata prop also
+    const rows = result.entries.map(e => {
+      return Object.keys(e)
+        .filter(k => k !== '.metadata')
+        .reduce((a, b) => {
+          const flatProp = { [b]: e[b]._ };
+          return Object.assign(a, flatProp);
+        }, {});
+    });
+    
+    const sorted = rows.slice().sort(byTime);
 
-      return callback(null, sorted);
+    return callback(null, sorted);
   });
-}
+};
