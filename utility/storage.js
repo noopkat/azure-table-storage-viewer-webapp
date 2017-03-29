@@ -1,6 +1,6 @@
 function byTime (a, b) {
   const earlier = (new Date(a.EventEnqueuedUtcTime.toString())).getTime() > (new Date(b.EventEnqueuedUtcTime.toString())).getTime();
-  
+
   switch (earlier) {
     case true:
       return -1;
@@ -35,8 +35,8 @@ module.exports.getLastNRows = function(azure, tableService, columns, n, callback
           }, {});
       });
       
-      rows.sort(byTime);
+      const sorted = rows.slice().sort(byTime);
 
-      return callback(null, rows);
+      return callback(null, sorted);
   });
 }
