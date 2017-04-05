@@ -1,0 +1,131 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "siteName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the web app that you wish to create."
+      }
+    },
+    "hostingPlanName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the App Service plan to use for hosting the web app."
+      }
+    },
+    "siteLocation": {
+      "type": "string",
+      "defaultValue": "East US",
+      "metadata": {
+        "description": "The location to use for creating the web app and hosting plan. It must be one of the Azure locations that support web apps."
+      }
+    },
+    "repoURL": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "string"
+    },
+    "azureStorageAccountName" : {
+      "type": "string",
+      "metadata": {
+        "description": "The name you gave to your Azure Storage instance"
+      }
+    },
+    "azureStorageAccountKey" : {
+      "type": "string",
+      "metadata": {
+        "description": "The primary / secondary access key to your Azure Storage instance"
+      }
+    },
+    "azureStorageTableName" : {
+      "type": "string",
+      "metadata": {
+        "description": "The name you gave to your Azure Storage Table"
+      }
+    },
+    "TableColumns" : {
+      "type": "string",
+      "defaultValue": "Timestamp",
+      "metadata": {
+        "description": "a comma separated list of Table columns you want to show in the web app"
+      }
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('hostingPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[parameters('siteLocation')]",
+      "properties": {
+      },
+      "sku": {
+        "name": "F1"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('siteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[parameters('siteLocation')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[parameters('hostingPlanName')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2015-08-01",
+          "name": "web",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+          ],
+          "properties": {
+            "siteProperties": {
+              "webSocketsEnabled": false
+            }
+          }
+        },
+        {
+          "apiVersion": "2015-08-01",
+          "name": "appsettings",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+          ],
+          "properties": {
+            "TABLE_COLUMNS": "[parameters('TableColumns')]",
+            "AZURE_STORAGE_ACCOUNT": "[parameters('azureStorageAccountName')]",
+            "TABLE_NAME": "[parameters('azureStorageTableName')]",
+            "AZURE_STORAGE_ACCOUNT_KEY": "[parameters('azureStorageAccountKey')]",
+            "WEBSITE_NPM_DEFAULT_VERSION": "3.3.12",
+            "WEBSITE_NODE_DEFAULT_VERSION": "6.9.1"
+          }
+        },
+        {
+          "apiVersion": "2015-08-01",
+          "name": "web",
+          "type": "sourcecontrols",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
+            "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/web')]"
+          ],
+          "properties": {
+            "RepoUrl": "[parameters('repoURL')]",
+            "branch": "[parameters('branch')]"
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+     "siteUri": {
+       "type": "string",
+       "value": "[concat('https://',reference(resourceId('Microsoft.Web/sites', parameters('siteName'))).hostNames[0])]"
+     }
+  }
+}
